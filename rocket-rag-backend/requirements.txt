@@ -1,8 +1,9 @@
 fastapi
 uvicorn
 langchain
-chromadb
-python-dotenv
+langchain-community
+langchain-openai
 openai
-huggingface-hub
-sentence-transformers
+python-dotenv
+chromadb
+tiktoken
