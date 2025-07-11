@@ -1,89 +1,79 @@
-project: Rocket AI Portfolio
+# 🚀 Rocket AI Portfolio Assistant
 
-live_links:
-  frontend: https://rocket-ai-portfolio.vercel.app
+![Render](https://img.shields.io/badge/Backend-Render-blue?logo=render)  
+![Vercel](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)
 
-description: >
-  Rocket is a personal AI-powered portfolio assistant built using GPT-4, LangChain, and a full RAG pipeline.
-  Visitors can chat with Rocket to ask questions about your resume and background. It answers contextually using actual resume content.
+Your personal AI-powered portfolio assistant built with **GPT-4**, **LangChain**, **ChromaDB**, and a full **RAG (Retrieval-Augmented Generation)** pipeline. Ask *Rocket* about your resume, background, or experience — it fetches answers straight from your actual resume using intelligent retrieval!
 
-technologies:
-  backend:
-    - FastAPI
-    - Uvicorn
-    - Python 3.10+
-    - LangChain
-    - LangChain-Community
-    - LangChain-OpenAI
-    - ChromaDB
-    - PyPDFLoader
-    - OpenAIEmbeddings
-    - Render (hosting)
-  frontend:
-    - React.js
-    - Tailwind CSS
-    - Typing animation
-    - Input glow effect
-    - Dark/Light mode toggle
-    - Vercel (hosting)
-  RAG_pipeline:
-    - Document loading from Google Drive (via PyPDFLoader)
-    - Embedding generation (OpenAI)
-    - Vector store (ChromaDB)
-    - Retrieval-Augmented Generation (LangChain RetrievalQA)
-    - ChatOpenAI (GPT-4) answering with context
+---
 
-env_variables:
-  backend:
-    - OPENAI_API_KEY (stored securely on Render)
-  frontend:
-    - REACT_APP_API_URL=https://rocket-ai-portfolio.onrender.com
+## 🌐 Live Demo
 
-resume_integration:
-  source: Google Drive
-  link_used: https://drive.google.com/uc?export=download&id=1k5jrMVpWK2XfQ7bscIWiCD7j67fzAJXu
-  method: PyPDFLoader dynamically pulls and parses the PDF, converts it to text, embeds it, and saves it into Chroma vector DB.
+- [https://rocket-ai-portfolio.vercel.app/]
+  
+---
 
-features:
-  - Chat-based AI assistant that answers questions based on your resume
-  - GPT-4 model integration via LangChain
-  - Dynamic PDF-to-vectorstore pipeline
-  - Live frontend and backend deployment
-  - Smart CORS setup for secure API access
-  - Smooth dark/light theme and interactive design
-  - Typing animation and stylized input field for UX polish
+## ✨ Features
 
-deployment:
-  vercel: Frontend hosted and deployed instantly
-  render: Backend hosted with auto-rebuild on push
+- 🤖 **Chat-based AI assistant** powered by GPT-4
+- 📄 Parses resume PDF from Google Drive
+- 🧠 ChromaDB vector store for persistent embeddings
+- 🔍 LangChain `RetrievalQA` for smart answers
+- ⚙️ Auto-rebuilds vectorstore on first deploy
+- 🎨 Typing animation + dark/light mode toggle
+- 🧩 Input field with glow on focus
+- 🧠 Answers questions based on actual resume content
 
-how_to_run_locally:
-  backend:
-    - cd rocket-rag-backend
-    - python -m venv venv
-    - source venv/bin/activate
-    - pip install -r requirements.txt
-    - uvicorn main:app --reload
-  frontend:
-    - cd rocket-frontend
-    - npm install
-    - npm run dev
+---
 
-improvements_todo:
-  - Voice-controlled interface with "Rocket" wake word
-  - Upload your own resume directly from UI
-  - Multi-turn memory chat system
-  - Admin dashboard and query analytics
+## 🧰 Tech Stack
 
-why_this_project: >
-  Rocket is more than a portfolio — it's a smart AI-powered digital identity.
-  It demonstrates full-stack AI engineering, RAG architecture, modern deployment, and solid UX design.
+### 🔙 Backend (`rocket-rag-backend`)
+- `FastAPI` + `Uvicorn`
+- `LangChain`, `LangChain-Community`, `LangChain-OpenAI`
+- `OpenAIEmbeddings`, `ChatOpenAI`
+- `ChromaDB` for vector storage
+- `PyPDFLoader` for light PDF parsing
+- Hosted on **Render**
 
-contact:
-  linkedin: https://www.linkedin.com/in/rishichandan/
-  github: https://github.com/RishiChandan
-  email: your.email@example.com
+### 🌐 Frontend (`rocket-frontend`)
+- `React.js` + `Tailwind CSS`
+- Typing animation (`react-simple-typewriter`)
+- Dark/Light mode toggle
+- Input glow effect
+- Hosted on **Vercel**
 
-credits:
-  built_by: Rishi Chandan
-  powered_by: GPT-4, LangChain, and Rocket
+---
+
+## 📄 Resume Integration
+
+- 📎 Source: [Google Drive PDF](https://drive.google.com/file/d/1k5jrMVpWK2XfQ7bscIWiCD7j67fzAJXu/view)
+- 🔍 Loaded via `PyPDFLoader` from public Google Drive link
+- 🧠 Embedded using OpenAI + stored in ChromaDB
+- ⚡ Automatically persists to avoid repeated loads
+
+---
+
+## 🔐 Environment Variables
+
+### ✅ Backend (Render)
+| Key              | Description                    |
+|------------------|--------------------------------|
+| `OPENAI_API_KEY` | OpenAI API Key for GPT-4 usage |
+
+### ✅ Frontend (Vercel)
+| Key                  | Description                         |
+|----------------------|-------------------------------------|
+| `REACT_APP_API_URL`  | Backend endpoint for `/ask` route   |
+
+---
+
+## 🛠 How to Run Locally
+
+### 🔙 Backend
+```bash
+cd rocket-rag-backend
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install -r requirements.txt
+uvicorn main:app --reload
