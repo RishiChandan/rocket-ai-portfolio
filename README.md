@@ -47,7 +47,6 @@ Your personal AI-powered portfolio assistant built with **GPT-4**, **LangChain**
 
 ## 📄 Resume Integration
 
-- 📎 Source: [Google Drive PDF](https://drive.google.com/file/d/1k5jrMVpWK2XfQ7bscIWiCD7j67fzAJXu/view)
 - 🔍 Loaded via `PyPDFLoader` from public Google Drive link
 - 🧠 Embedded using OpenAI + stored in ChromaDB
 - ⚡ Automatically persists to avoid repeated loads
@@ -77,3 +76,47 @@ python -m venv venv
 source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
 uvicorn main:app --reload
+```
+
+
+## 🧠 RAG Pipeline Overview
+
+1. 📄 PDF loaded from a **public Google Drive** link using `PyPDFLoader`
+2. ✂️ Text is split into document chunks
+3. 🧠 Embeddings are generated using `OpenAIEmbeddings`
+4. 💾 Vectors are stored in **ChromaDB** (with persistent directory)
+5. 🔍 On user query, relevant chunks are retrieved
+6. 🤖 `ChatOpenAI` (GPT-4) answers using the retrieved context via `RetrievalQA`
+
+---
+
+## 🚀 Upcoming Improvements
+
+- 🗣️ Add voice support with wake word **"Rocket"**
+- 📄 Enable resume uploads directly from the frontend
+- 💬 Enable **multi-turn conversations** (memory support)
+- 📊 Admin dashboard for usage analytics and queries
+- 🔐 Auth system and query rate limiting
+
+---
+
+## 👨‍💻 About the Creator
+
+**Rishi Chandan**  
+🎓 Final-year Master's in Computer Science  
+🛠️ Passionate about AI x UX x Products  
+🔗 [LinkedIn](https://www.linkedin.com/in/rishichandan/) • 💻 [GitHub](https://github.com/RishiChandan)
+
+> Building meaningful products with code, creativity, and coffee ☕.
+
+---
+
+## 🙌 Credits
+
+- 🤖 Powered by **[OpenAI GPT-4](https://platform.openai.com/)** for LLM intelligence  
+- 🧠 Built using **[LangChain](https://www.langchain.com/)** and `RetrievalQA`  
+- 📎 Document parsed via `PyPDFLoader` from `langchain_community`  
+- 💾 Vector storage handled by **[ChromaDB](https://www.trychroma.com/)**  
+- 🚀 Hosted with ❤️ on **[Render](https://render.com/)** (Backend) and **[Vercel](https://vercel.com/)** (Frontend)
+
+> **Crafted to make portfolios intelligent. Inspired by the power of AI.**
