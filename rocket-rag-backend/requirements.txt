@@ -8,3 +8,6 @@ python-dotenv
 chromadb
 tiktoken
 unstructured
+pdfminer.six
+tqdm
+faiss-cpu
