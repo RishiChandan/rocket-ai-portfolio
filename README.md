@@ -93,7 +93,6 @@ uvicorn main:app --reload
 ## 👨‍💻 About the Creator
 
 **Rishi Chandan**  
-🎓 Final-year Master's in Computer Science  
 🛠️ Passionate about AI x UX x Products  
 🔗 [LinkedIn](https://www.linkedin.com/in/rishichandan/) • 💻 [GitHub](https://github.com/RishiChandan)
 
