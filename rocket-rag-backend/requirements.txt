@@ -16,3 +16,4 @@ unstructured_inference
 pillow
 python-magic
 pdf2image
+PyMuPDF
