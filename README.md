@@ -90,16 +90,6 @@ uvicorn main:app --reload
 
 ---
 
-## 🚀 Upcoming Improvements
-
-- 🗣️ Add voice support with wake word **"Rocket"**
-- 📄 Enable resume uploads directly from the frontend
-- 💬 Enable **multi-turn conversations** (memory support)
-- 📊 Admin dashboard for usage analytics and queries
-- 🔐 Auth system and query rate limiting
-
----
-
 ## 👨‍💻 About the Creator
 
 **Rishi Chandan**  
