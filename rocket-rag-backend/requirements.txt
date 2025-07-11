@@ -10,3 +10,5 @@ tiktoken
 faiss-cpu
 unstructured
 requests
+pdfminer.six
+pi_heif
