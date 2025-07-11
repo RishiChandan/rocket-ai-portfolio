@@ -12,3 +12,6 @@ unstructured
 requests
 pdfminer.six
 pi_heif
+unstructured_inference
+pillow
+python-magic
