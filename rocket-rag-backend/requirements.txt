@@ -7,4 +7,6 @@ openai
 python-dotenv
 chromadb
 tiktoken
+faiss-cpu
+unstructured
 requests
