@@ -1,0 +1,22 @@
+# Ignore .env files
+rocket-frontend/.env
+rocket-rag-backend/.env
+
+# Node modules (frontend)
+rocket-frontend/node_modules/
+
+# Python virtual environment (backend)
+rocket-rag-backend/venv/
+
+# __pycache__ folders (backend)
+**/__pycache__/
+
+# VS Code settings (optional)
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log

@@ -1,0 +1,6 @@
+rocket-frontend/.env
+rocket-rag-backend/.env
+rocket-frontend/node_modules/
+rocket-rag-backend/chroma_db/
+*.log
+__pycache__/
