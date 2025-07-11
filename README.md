@@ -39,8 +39,6 @@ Your personal AI-powered portfolio assistant built with **GPT-4**, **LangChain**
 ### 🌐 Frontend (`rocket-frontend`)
 - `React.js` + `Tailwind CSS`
 - Typing animation (`react-simple-typewriter`)
-- Dark/Light mode toggle
-- Input glow effect
 - Hosted on **Vercel**
 
 ---
