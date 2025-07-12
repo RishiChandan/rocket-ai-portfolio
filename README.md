@@ -20,8 +20,6 @@ Your personal AI-powered portfolio assistant built with **GPT-4**, **LangChain**
 - 🧠 ChromaDB vector store for persistent embeddings
 - 🔍 LangChain `RetrievalQA` for smart answers
 - ⚙️ Auto-rebuilds vectorstore on first deploy
-- 🎨 Typing animation + dark/light mode toggle
-- 🧩 Input field with glow on focus
 - 🧠 Answers questions based on actual resume content
 
 ---
