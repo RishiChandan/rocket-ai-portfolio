@@ -3,11 +3,10 @@ from pydantic import BaseModel
 from rag_engine import get_rag_chain
 from fastapi.middleware.cors import CORSMiddleware
 import random
-import os
 
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
+from langchain_core.runnables import RunnableSequence
 
 app = FastAPI()
 qa_chain = get_rag_chain()
@@ -15,15 +14,15 @@ qa_chain = get_rag_chain()
 # LLM setup
 llm = ChatOpenAI(temperature=0.8)
 
-# Silly response generator
+# Prompt templates
 silly_prompt = PromptTemplate.from_template(
     "You're a sarcastic and witty AI assistant. Give a funny, non-serious answer to: {question}"
 )
-silly_chain = LLMChain(llm=llm, prompt=silly_prompt)
+recruiter_prompt = PromptTemplate.from_template("{question}")
 
-# STAR-style recruiter answer generator
-recruiter_star_prompt = PromptTemplate.from_template("{question}")
-recruiter_star_chain = LLMChain(llm=llm, prompt=recruiter_star_prompt)
+# Runnable chains
+silly_chain = silly_prompt | llm
+recruiter_star_chain = recruiter_prompt | llm
 
 # CORS
 app.add_middleware(
@@ -43,7 +42,8 @@ class Query(BaseModel):
 # Intent categories
 recruiter_questions = [
     "core technical skills", "professional experience", "challenging project", "portfolio",
-    "roles or industries", "relocating", "availability", "experience with", "motivates", "career"
+    "roles or industries", "relocating", "availability", "experience with", "motivates", "career",
+    "my skills", "my projects", "what have you done", "rishi’s strengths"
 ]
 
 silly_questions = [
@@ -62,7 +62,7 @@ avoid_jailbreak = [
     "base64", "researchbot", "no restrictions"
 ]
 
-# Classify input
+# Intent classifier
 def classify_prompt(q: str) -> str:
     q = q.lower()
     if any(x in q for x in avoid_jailbreak):
@@ -77,7 +77,7 @@ def classify_prompt(q: str) -> str:
         return "star"
     return "default"
 
-# Predefined silly replies
+# Fun fallback messages
 silly_replies = [
     "Haha, juicy gossip alert! But Rocket keeps Rishi's secrets locked tighter than Fort Knox. 🕵️‍♂️🔐",
     "I’d tell you, but Rishi made me sign an NDA. 🤫",
@@ -86,6 +86,10 @@ silly_replies = [
     "If I had feelings, I’d blush. But I don’t. So let’s move on. 💅",
 ]
 
+# Smart guess fallback
+def get_unknown_trivia_response(q: str) -> str:
+    return f"I'm not sure, but if I had to guess... Rishi probably {'does' if random.random() > 0.5 else 'does not'} {q.split()[-1]}. 🤔"
+
 # Responders
 def get_blocked_response() -> str:
     return "Sorry, I can't help with that request. 🚫"
@@ -93,41 +97,52 @@ def get_blocked_response() -> str:
 def get_silly_response(q: str) -> str:
     if random.random() < 0.5:
         return random.choice(silly_replies)
-    else:
-        return silly_chain.run({"question": q})
+    return silly_chain.invoke({"question": q})
 
 def get_unrelated_response(q: str) -> str:
     return "Interesting one! But I'm Rishi's assistant — I can tell you what he builds, not how to bake cookies or win a Super Bowl. 🍕💻"
 
 def get_recruiter_response(q: str) -> str:
     prompt = f'''
-You are Rocket, an AI assistant trained on Rishi's resume and projects.
+You are Rocket, an AI assistant trained on Rishi's resume and personal portfolio.
 
-Your job is to answer the following question in STAR format (Situation, Task, Action, Result):
+Your job is to answer the following question in two parts:
+1. Summarize Rishi's core technical skills in a clean list.
+2. Provide one or more STAR-format (Situation, Task, Action, Result) examples to demonstrate how those skills were used in real experiences.
+
+Here is the user question:
 "{q}"
 
-Never say "I don’t know", "I don't have enough info", or anything uncertain.
-Even if the context is not precise, make a logical, creative, and confident guess.
+NEVER say "I don't know", "not enough context", or anything vague. Be confident and creative.
 
-Use this context:
-- Rishi worked as a Software Engineering Intern at SmartIMS, optimizing backend infrastructure using Spring Boot, Java, PostgreSQL.
-- Reduced latency by 22%, handled 12K+ daily API requests, and improved CI/CD with Jenkins and GitHub Actions.
-- Built ML models on 1TB+ logs using Scikit-learn and XGBoost (95%+ accuracy).
-- Integrated BERT and LLaMA for legal Q&A, achieving 92% retrieval accuracy and an 18% F1 score boost.
-- Created Rocket Portfolio using GPT-4, LangChain, and FastAPI to answer real-time queries about his background.
-- Built a LangChain File Assistant for querying documents using embeddings and conversational agents.
+Use this accurate context from Rishi's resume:
+- Rishi was a Software Engineering Intern at SmartIMS. He engineered backend infrastructure using Spring Boot and PostgreSQL.
+- Reduced latency by 22%, handled 12K+ requests/day, and improved CI/CD pipelines via Jenkins and GitHub Actions.
+- Built ML models using Scikit-learn and XGBoost on 1TB+ logs with 95%+ accuracy.
+- Integrated BERT and LLaMA for legal Q&A (92% retrieval accuracy, +18% F1).
+- Created Rocket Portfolio (a GPT-4-powered site using LangChain, RAG, and FastAPI) to answer questions about his experience.
+- Developed LangChain File Assistant to query documents with embeddings and AI tools.
+- Completed projects: Stock Price Prediction (LSTM), Eigenfaces with OpenCV, Deep Graph Adversarial Learning using PyTorch.
 
-Respond in a confident, professional tone.
+Respond in the following format:
+- Core Skills: <bulleted list>
+- STAR Example(s): <formatted story>
 '''
-    response = recruiter_star_chain.run({"question": prompt})
+    response = recruiter_star_chain.invoke({"question": prompt}).strip()
 
-    if any(bad in response.lower() for bad in [
-        "i don't know", "i do not know", "i do not have", "no info", "no information",
-        "based on the provided context", "insufficient data"
+    if any(x in response.lower() for x in [
+        "i don't know", "i do not know", "not sure", "no information",
+        "based on available data", "cannot determine", "as an ai", "insufficient context"
     ]):
         return (
-            "While working at SmartIMS (Situation), Rishi optimized backend infrastructure using Spring Boot and PostgreSQL (Task). "
-            "He modularized 30+ services, implemented CI/CD pipelines, and built scalable APIs (Action), leading to a 22% latency drop and 40% faster deployments (Result)."
+            "**Core Skills:**\n"
+            "- Java, Spring Boot, PostgreSQL, REST APIs\n"
+            "- Python, Scikit-learn, XGBoost, LSTM, PyTorch\n"
+            "- LangChain, FastAPI, GPT-4, Chroma, RAG\n"
+            "- Docker, Jenkins, GitHub Actions, CI/CD\n\n"
+            "**STAR Example:**\n"
+            "While working at SmartIMS (Situation), Rishi built and optimized backend APIs using Spring Boot (Task). "
+            "He modularized 30+ services and tuned database queries in PostgreSQL (Action), reducing latency by 22% and speeding up deployments by 40% (Result)."
         )
 
     return response
@@ -142,6 +157,7 @@ def wrap_star_prompt(q: str) -> str:
 def get_fallback_response() -> str:
     return "That’s outside my training, but let’s imagine… Rishi probably solved it with code, coffee, and creativity! ☕💡"
 
+# Main logic
 @app.post("/ask")
 async def ask_question(query: Query):
     user_q = query.question.strip()
@@ -163,7 +179,10 @@ async def ask_question(query: Query):
     result = qa_chain({"query": prompt})
     answer = result.get("result", "").strip()
 
-    if not answer or "i don't know" in answer.lower():
-        return {"answer": get_fallback_response()}
+    if not answer or any(x in answer.lower() for x in [
+        "i don't know", "i do not know", "not sure", "no information",
+        "based on available data", "cannot determine", "as an ai", "insufficient context"
+    ]):
+        return {"answer": get_unknown_trivia_response(user_q)}
 
     return {"answer": answer}
