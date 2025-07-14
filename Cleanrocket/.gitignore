@@ -4,3 +4,4 @@ rocket-frontend/node_modules/
 rocket-rag-backend/chroma_db/
 *.log
 __pycache__/
+rocket-rag-backend/resume.pdf
