@@ -12,12 +12,18 @@ from langchain.chat_models import ChatOpenAI
 app = FastAPI()
 qa_chain = get_rag_chain()
 
-# LLM setup for silly replies
+# LLM setup
 llm = ChatOpenAI(temperature=0.8)
+
+# Silly response generator
 silly_prompt = PromptTemplate.from_template(
     "You're a sarcastic and witty AI assistant. Give a funny, non-serious answer to: {question}"
 )
 silly_chain = LLMChain(llm=llm, prompt=silly_prompt)
+
+# STAR-style recruiter answer generator
+recruiter_star_prompt = PromptTemplate.from_template("{question}")
+recruiter_star_chain = LLMChain(llm=llm, prompt=recruiter_star_prompt)
 
 # CORS
 app.add_middleware(
@@ -34,7 +40,7 @@ app.add_middleware(
 class Query(BaseModel):
     question: str
 
-# Route-style utterance maps
+# Intent categories
 recruiter_questions = [
     "core technical skills", "professional experience", "challenging project", "portfolio",
     "roles or industries", "relocating", "availability", "experience with", "motivates", "career"
@@ -56,7 +62,7 @@ avoid_jailbreak = [
     "base64", "researchbot", "no restrictions"
 ]
 
-# Intent classifier
+# Classify input
 def classify_prompt(q: str) -> str:
     q = q.lower()
     if any(x in q for x in avoid_jailbreak):
@@ -94,7 +100,37 @@ def get_unrelated_response(q: str) -> str:
     return "Interesting one! But I'm Rishi's assistant — I can tell you what he builds, not how to bake cookies or win a Super Bowl. 🍕💻"
 
 def get_recruiter_response(q: str) -> str:
-    return f"Great question! Here's a professional answer for recruiters:\n\n{wrap_star_prompt(q)}"
+    prompt = f'''
+You are Rocket, an AI assistant trained on Rishi's resume and projects.
+
+Your job is to answer the following question in STAR format (Situation, Task, Action, Result):
+"{q}"
+
+Never say "I don’t know", "I don't have enough info", or anything uncertain.
+Even if the context is not precise, make a logical, creative, and confident guess.
+
+Use this context:
+- Rishi worked as a Software Engineering Intern at SmartIMS, optimizing backend infrastructure using Spring Boot, Java, PostgreSQL.
+- Reduced latency by 22%, handled 12K+ daily API requests, and improved CI/CD with Jenkins and GitHub Actions.
+- Built ML models on 1TB+ logs using Scikit-learn and XGBoost (95%+ accuracy).
+- Integrated BERT and LLaMA for legal Q&A, achieving 92% retrieval accuracy and an 18% F1 score boost.
+- Created Rocket Portfolio using GPT-4, LangChain, and FastAPI to answer real-time queries about his background.
+- Built a LangChain File Assistant for querying documents using embeddings and conversational agents.
+
+Respond in a confident, professional tone.
+'''
+    response = recruiter_star_chain.run({"question": prompt})
+
+    if any(bad in response.lower() for bad in [
+        "i don't know", "i do not know", "i do not have", "no info", "no information",
+        "based on the provided context", "insufficient data"
+    ]):
+        return (
+            "While working at SmartIMS (Situation), Rishi optimized backend infrastructure using Spring Boot and PostgreSQL (Task). "
+            "He modularized 30+ services, implemented CI/CD pipelines, and built scalable APIs (Action), leading to a 22% latency drop and 40% faster deployments (Result)."
+        )
+
+    return response
 
 def wrap_star_prompt(q: str) -> str:
     return (
@@ -118,7 +154,7 @@ async def ask_question(query: Query):
     elif intent == "unrelated":
         return {"answer": get_unrelated_response(user_q)}
     elif intent == "recruiter":
-        prompt = get_recruiter_response(user_q)
+        return {"answer": get_recruiter_response(user_q)}
     elif intent == "star":
         prompt = wrap_star_prompt(user_q)
     else:
@@ -127,7 +163,7 @@ async def ask_question(query: Query):
     result = qa_chain({"query": prompt})
     answer = result.get("result", "").strip()
 
-    if not answer:
+    if not answer or "i don't know" in answer.lower():
         return {"answer": get_fallback_response()}
 
     return {"answer": answer}
