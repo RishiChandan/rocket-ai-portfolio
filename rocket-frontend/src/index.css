@@ -1,5 +1,5 @@
 body {
-  background: url("R:\Projects\Rocket_portfolio\rocket-frontend\public\bg.jpg") no-repeat center center fixed;
+  background: url("/bg.jpg") no-repeat center center fixed;
   background-size: cover;
   color: white;
 }
