@@ -44,58 +44,101 @@ function App() {
         setDisplayedAnswer((prev) => prev + answer.charAt(i));
         i++;
         if (i >= answer.length) clearInterval(interval);
-      }, 20);
+      }, 8);
       return () => clearInterval(interval);
     }
   }, [answer]);
 
   return (
-    <div className=" bg-gradient-to-br from-red-900 via-black to-blue-900 text-white p-6 flex flex-col items-center dark:bg-black">
-      {/* Profile Section */}
-      <div className="flex flex-col items-center text-center mb-10">
-        <img
-          src="/rishi.jpg"
-          alt="Rishi"
-          className="rounded-full w-32 h-32 border-4 border-red-600 mb-4"
-        />
-        <h1 className="text-4xl font-bold text-red-500">Rishi Chandan Didigam</h1>
-        <p className="mt-2 text-sm max-w-md">
-          AI/ML Engineer passionate about intelligent systems, model building,
-          and solving problems with creativity and code.
-        </p>
-      </div>
+    <div className="w-full max-w-5xl mx-auto p-4">
+      <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-[0_4px_25px_rgba(255,255,255,0.5)] p-6 flex flex-col gap-8 border border-white/20">
 
-      {/* Search Bar */}
-      <div className="w-full max-w-2xl flex items-center gap-2 mb-10">
-        <input
-          type="text"
-          className="flex-1 bg-white/10 border border-red-500 text-white placeholder-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 backdrop-blur-md"
-          placeholder="I am RoCket, Rishi's best friend. I'm excited to talk about Rishi!"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <button
-          onClick={sendMessage}
-          className="bg-gradient-to-r from-red-600 to-blue-700 hover:from-blue-700 hover:to-red-600 transition-all text-white px-4 py-2 rounded shadow-md font-semibold"
-        >
-          Ask 🚀
-        </button>
-      </div>
+        {/* 🚀 Top Profile Summary */}
+        <div className="flex flex-col md:flex-row items-start gap-6">
+          <img
+            src="/rishi.jpg"
+            alt="Rishi"
+            className="w-40 h-90 rounded-xl object-cover"
+          />
 
-      {/* Answer Section */}
-      <div className="w-full max-w-2xl text-left space-y-4" ref={resultsRef}>
-        {loading && (
-          <div className="text-white animate-pulse">Rocket is thinking...</div>
-        )}
-        {!loading && displayedAnswer && (
-          <div className="px-4 py-3 rounded-lg bg-red-600 text-white shadow-md whitespace-pre-line">
-            {displayedAnswer}
+          <div className="flex-1 space-y-3">
+            <h1 className="text-3xl font-bold" style={{ color: "#DDDDDD" }}>
+              Rishi Chandan Didigam
+            </h1>
+            <p className="text-xs" style={{ color: "#DDDDDD" }}>
+              AI/ML Engineer passionate about intelligent systems, model building,
+              and solving problems with creativity and code.
+            </p>
+
+            <div>
+              <h2 className="font-semibold text-sm" style={{ color: "#DDDDDD" }}>
+                Key Skills
+              </h2>
+              <ul className="list-disc list-inside text-xs" style={{ color: "#DDDDDD" }}>
+                <li><b>Machine Learning & Deep Learning:</b> GPT-4.1, LLaMA, Transformers, RAG (LangChain), CNNs, LSTMs, Scikit-learn, PyTorch, TensorFlow, XGBoost, model deployment via FastAPI/Flask.</li>
+                <li><b>Backend & DevOps:</b> Spring Boot, Django, FastAPI, REST APIs, PostgreSQL, Docker, AWS (SageMaker, Lambda), Jenkins, GitHub Actions, CI/CD pipelines.</li>
+                <li><b>Frontend & Data Engineering:</b> React.js, Tailwind CSS, Vite, feature engineering, preprocessing, hyperparameter tuning, and cloud-integrated MLOps workflows (MLflow, A/B testing).</li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="font-semibold text-sm" style={{ color: "#DDDDDD" }}>
+                Projects
+              </h2>
+              <ul className="list-disc list-inside text-xs" style={{ color: "#DDDDDD" }}>
+                <li>
+                  <a href="https://github.com/RishiChandan/rocket-ai-portfolio" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    Rocket AI Portfolio Assistant
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/RishiChandan/LangChain_File_Assistant" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    LangChain File Assistant
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/RishiChandan/DGAAL" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    DGAAL
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-        )}
+        </div>
+
+        {/* 🔍 Search Bar */}
+        <div className="w-full flex flex-col sm:flex-row items-center gap-3">
+          <input
+            type="text"
+            className="flex-1 p-4 rounded-xl text-white bg-[#333333] focus:outline-none transition-all duration-300 custom-hover-glow placeholder:text-gray-300"
+            placeholder="I am RoCket, Rishi's best friend. I'm excited to talk about Rishi!"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          <button
+            onClick={sendMessage}
+            className="p-4 px-6 rounded-xl text-white bg-[#333333] focus:outline-none transition-all duration-300 custom-hover-glow"
+          >
+            Ask 🚀
+          </button>
+        </div>
+
+        {/* 💬 Answer Section */}
+        <div className="w-full max-w-2xl text-left space-y-4" ref={resultsRef}>
+          {loading && (
+            <div className="text-gray-800 animate-pulse">Rocket is thinking...</div>
+          )}
+          {!loading && displayedAnswer && (
+            <div className="px-4 py-3 rounded-lg bg-[#333333] text-white shadow-md whitespace-pre-line">
+              {displayedAnswer}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
+
 }
 
 export default App;

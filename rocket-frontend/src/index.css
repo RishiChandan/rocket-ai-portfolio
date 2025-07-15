@@ -1,4 +1,68 @@
+body {
+  background: url("R:\Projects\Rocket_portfolio\rocket-frontend\public\bg.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@keyframes hover-wave {
+  0% {
+    box-shadow: 0 0 0px #dc262600;
+  }
+  50% {
+    box-shadow: 0 0 8px #FFFFFF, 0 0 12px #FFFFFF;
+  }
+  100% {
+    box-shadow: 0 0 0px #dc262600;
+  }
+}
+
+.custom-hover-glow {
+  border: none;
+  transition: all 0.2s ease-in-out;
+  border-radius: 1rem;
+}
+
+.custom-hover-glow:hover {
+  animation: hover-wave 2s ease-in-out infinite;
+  border: 2px solid #FFFFFF;
+}
+
+@keyframes red-glow {
+  0% {
+    box-shadow: 0 0 2px #FFFFFF;
+  }
+  50% {
+    box-shadow: 0 0 6px #FFFFFF;
+  }
+  100% {
+    box-shadow: 0 0 2px #FFFFFF;
+  }
+}
+
+.custom-hover-glow {
+  border: none;
+  transition: all 0.2s ease-in-out;
+  border-radius: 1rem;
+}
+
+.custom-hover-glow:hover {
+  animation: red-glow 2s ease-in-out infinite;
+  border: 2px solid #FFFFFF;
+}
+
+.custom-button {
+  border: 2px solid #FFFFFF;
+  animation: red-glow 3s ease-in-out infinite alternate;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: #FFFFFF;
+  transform: scale(1.01);
+}
