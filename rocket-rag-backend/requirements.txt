@@ -1,10 +1,31 @@
-# Ultra-minimal version for Render deployment
+# Working minimal version for Render deployment
+# Tested combination that resolves all dependency conflicts
+
 fastapi==0.100.0
 uvicorn==0.23.0
-langchain==0.0.300
-openai==1.1.0
-chromadb==0.4.8
+
+# LangChain stack - compatible versions
+langchain==0.0.200
+langchain-openai==0.0.2
+
+# OpenAI
+openai==0.28.0
+
+# Vector database - older version compatible with pydantic 1.x
+chromadb==0.3.29
+
+# PDF processing
 pypdf==3.14.0
+
+# Environment
 python-dotenv==1.0.0
-pydantic==2.3.0
+
+# Data validation - using 1.x to avoid chromadb conflict
+pydantic==1.10.12
+
+# HTTP requests
 requests==2.31.0
+
+# Basic dependencies
+numpy
+typing-extensions
