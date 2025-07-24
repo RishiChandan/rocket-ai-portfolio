@@ -1,31 +1,19 @@
-# Working minimal version for Render deployment
-# Tested combination that resolves all dependency conflicts
-
-fastapi==0.100.0
-uvicorn==0.23.0
-
-# LangChain stack - compatible versions
-langchain==0.0.200
-langchain-openai==0.0.2
-
-# OpenAI
-openai==0.28.0
-
-# Vector database - older version compatible with pydantic 1.x
-chromadb==0.3.29
-
-# PDF processing
-pypdf==3.14.0
-
-# Environment
-python-dotenv==1.0.0
-
-# Data validation - using 1.x to avoid chromadb conflict
-pydantic==1.10.12
-
-# HTTP requests
-requests==2.31.0
-
-# Basic dependencies
-numpy
-typing-extensions
+fastapi
+uvicorn
+langchain
+langchain-community
+langchain-openai
+openai
+python-dotenv
+chromadb
+tiktoken
+faiss-cpu
+unstructured
+requests
+pdfminer.six
+pi_heif
+unstructured_inference
+pillow
+python-magic
+pdf2image
+PyMuPDF
