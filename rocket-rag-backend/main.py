@@ -41,7 +41,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:3001", 
-        "https://yourwebsite.com"  # Add your production domain
+        "https://rocket-ai-portfolio.vercel.app"  # Add your production domain
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST"],
