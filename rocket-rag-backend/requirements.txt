@@ -1,19 +1,38 @@
-fastapi
-uvicorn
-langchain
-langchain-community
-langchain-openai
-openai
-python-dotenv
-chromadb
-tiktoken
-faiss-cpu
-unstructured
-requests
-pdfminer.six
-pi_heif
-unstructured_inference
-pillow
-python-magic
-pdf2image
-PyMuPDF
+# Core FastAPI and server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# LangChain and AI components - Updated to compatible versions
+langchain==0.1.20
+langchain-community==0.0.38
+langchain-openai==0.1.7
+
+# Vector database and embeddings - Fixed version
+chromadb==0.4.24
+
+# PDF processing
+pypdf==3.17.4
+
+# OpenAI - Updated version
+openai==1.12.0
+
+# Environment and configuration
+python-dotenv==1.0.0
+
+# Data validation
+pydantic==2.5.2
+
+# HTTP client
+httpx==0.25.2
+requests==2.31.0
+
+# Required for text splitting
+tiktoken==0.6.0
+
+# Additional dependencies that might be missing
+python-multipart==0.0.6
+typing-extensions==4.9.0
+
+# System dependencies for Render
+wheel==0.42.0
+setuptools==69.0.3

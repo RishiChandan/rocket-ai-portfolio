@@ -19,7 +19,7 @@ db.persist()
 
 # Setup retriever and GPT-4.1 (Turbo)
 retriever = db.as_retriever()
-llm = ChatOpenAI(model="gpt-4-1106-preview", temperature=0)
+llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0)
 
 # Retrieval chain
 qa_chain = RetrievalQA.from_chain_type(
